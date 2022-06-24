@@ -22,51 +22,27 @@ func main() {
 		"width='%d' height='%d'>", width, height)
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
-			ax, ay, err := corner(i+1, j)
-			if ErrCheck(err) {
-				// that function calls need for check unwanted polygons
-				continue
-			}
-			bx, by, err := corner(i, j)
-			if ErrCheck(err) {
-				continue
-			}
-			cx, cy, err := corner(i, j+1)
-			if ErrCheck(err) {
-				continue
-			}
-			dx, dy, err := corner(i+1, j+1)
-			if ErrCheck(err) {
-				continue
-			}
+			ax, ay := corner(i+1, j)
+			bx, by := corner(i, j)
+			cx, cy := corner(i, j+1)
+			dx, dy := corner(i+1, j+1)
 			fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
 				ax, ay, bx, by, cx, cy, dx, dy)
 		}
 	}
 	fmt.Println("</svg>")
 }
-func ErrCheck(err error) bool {
-	//check polygon errors
 
-	if err != nil {
-		return true
-	} else {
-		return false
-	}
-
-}
-
-func corner(i, j int) (float64, float64, error) {
+func corner(i, j int) (float64, float64) {
 	// Find point (x,y) at corner of cell (i,j).
 	x := xyrange * (float64(i)/cells - 0.5)
 	y := xyrange * (float64(j)/cells - 0.5)
 	// Compute surface height z.
 	z := f(x, y)
-
 	// Project (x,y,z) isometrically onto 2-D SVG canvas (sx,sy).
 	sx := width/2 + (x-y)*cos30*xyscale
 	sy := height/2 + (x+y)*sin30*xyscale - z*zscale
-	return sx, sy, nil
+	return sx, sy
 }
 
 func f(x, y float64) float64 {
