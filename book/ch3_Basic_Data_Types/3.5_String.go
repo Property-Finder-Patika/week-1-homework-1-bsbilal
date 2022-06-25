@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"unicode/utf8"
 )
 
@@ -43,6 +44,21 @@ func main() {
 	fmt.Println(string(0x4eac)) // "C"
 
 	fmt.Println(string(1234567)) // "?"
+
+	// 3.5.5
+
+	c := 123
+	y := fmt.Sprintf("%d", c)
+	fmt.Println(y, strconv.Itoa(c))             // "123 123"
+	a, err := strconv.Atoi("123")               // x is an int
+	xd, err2 := strconv.ParseInt("123", 10, 64) // base 10, up to 64 bits
+
+	if err != nil || err2 != nil {
+		fmt.Print("no error")
+
+		print("%d %d", a, xd)
+
+	}
 
 }
 
